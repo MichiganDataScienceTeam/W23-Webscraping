@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'MDST Webscraping project!'
+    return render_template('index.html')
 
 
 @app.route('/wordsearch/')
