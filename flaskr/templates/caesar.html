@@ -6,7 +6,7 @@
 {% block content %}
     <div class="wordsearch" >
         {% for string, key in word_caesar: %}
-        <p class="row_{{key}}">
+        <p id="row_{{key}}">
             {{string}}
         </p>
 
@@ -18,8 +18,8 @@
     <hr>
     <div class="instructions">
         <h2>Take care in what you are scraping...</h2>
-        <p class="MESSING WITH YOU">hello. don't scrape me :)</p>
-        <p class="row_hibro">don't scrape me either please</p>
+        <p id="MESSING WITH YOU">hello. don't scrape me :)</p>
+        <p id="row_hibro">don't scrape me either please</p>
 
     </div>
 {% endblock %}
