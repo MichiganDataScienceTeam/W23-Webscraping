@@ -1,43 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Caesar Unscramble!</title>
-        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/main.css')}}">
-        <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='MDST_logo.png')}}">
-    </head>
+{% extends "layout.html" %}
+{% block headTitle %}Caesar Unscramble!{% endblock %}
 
-    <body>
-        <div class="header">
-            <a href="https://www.mdst.club/" target="_blank"><img src="{{url_for('static', filename='MDST_logo.png')}}" alt="mdst logo" class="logo"></a><div style="font-size:30px; margin-left:10px;">Webscraping Project</div>
-            <h1 text-align="center">Caesar Unscramble!</h1>
-        </div>
+{%block headerTitle %}Caesar Unscramble!{% endblock %}
 
-        <div class="wordsearch" >
-            {% for string, key in word_caesar: %}
-            <p class="row_{{key}}">
-                {{string}}
-            </p>
+{% block content %}
+    <div class="wordsearch" >
+        {% for string, key in word_caesar: %}
+        <p class="row_{{key}}">
+            {{string}}
+        </p>
 
-            {%endfor%}
+        {%endfor%}
 
-        </div>
-        <br>
-        <br>
-        <hr>
-        <div class="instructions">
-            <h2>Take care in what you are scraping...</h2>
-            <p class="MESSING WITH YOU">hello. don't scrape me :)</p>
-            <p class="row_hibro">don't scrape me either please</p>
+    </div>
+    <br>
+    <br>
+    <hr>
+    <div class="instructions">
+        <h2>Take care in what you are scraping...</h2>
+        <p class="MESSING WITH YOU">hello. don't scrape me :)</p>
+        <p class="row_hibro">don't scrape me either please</p>
 
-        </div>
-
-
-
-    </body>
-    
-
-
-
-
-
-</html>
+    </div>
+{% endblock %}

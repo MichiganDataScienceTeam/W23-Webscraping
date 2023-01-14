@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block head %}
+        <title>{% block headTitle %}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/main.css')}}">
+        <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='MDST_logo.png')}}">
+        {% endblock %}
+    </head>
+
+    <body>
+        {% block header %}
+        <div class="header">
+            <a href="https://www.mdst.club/" target="_blank"><img src="{{url_for('static', filename='MDST_logo.png')}}" alt="mdst logo" class="logo"></a><div style="font-size:30px; margin-left:10px;">Webscraping Project</div>
+            <h1 text-align="center">{% block headerTitle %}{% endblock %}</h1>
+        </div>
+        {% endblock %}
+        {%block content %}{%endblock%}
+    </body>
+    
+
+
+
+
+
+</html>
