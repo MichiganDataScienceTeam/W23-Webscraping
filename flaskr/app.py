@@ -50,7 +50,11 @@ def unshuffled_ascii_art(art):
 def ascii_art(art):
     lines = read_in_art(f'static/{art}.txt', replace=False)
 
-    return render_template('ascii_art.html', art=art, line=''.join(lines))
+    choices = ['10/10', 'craaazy art', 'I wonder how long it took to make this']
+    
+
+    line = f'"{random.choice(choices)}"\n\n' + ''.join(lines)
+    return render_template('ascii_art.html', art=art, line=line)
 
 
 if __name__ == '__main__':
