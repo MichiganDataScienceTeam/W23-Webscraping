@@ -1,0 +1,69 @@
+@import url("fontawesome-all.min.css");
+@import url("https://fonts.googleapis.com/css?family=Permanent+Marker");
+@import url("https://fonts.googleapis.com/css?family=serif");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.css");
+
+html {
+    display: block;
+}
+
+h1 {
+    font-size: 60px;
+}
+
+
+
+body, h1, h2 {
+    font-family: 'Georgia', 'Times New Roman', Times, serif;
+    margin-bottom: 0px;
+    margin-left: 10px;
+    padding-bottom: 0px;
+    
+}
+pre{
+    margin:0px;
+    font-size:large;
+    border: 0px;
+}
+
+
+h1, h2 {
+    text-align: center;
+}
+
+p, body {
+    margin: auto;
+
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 10px;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 0px;
+
+    display: block;
+
+}
+
+.logo {
+    text-align: "left";
+    margin-top: 10px;
+    margin-left: 10px;
+    height: 50px;
+    width: "auto";
+}
+
+a:link {
+    color: #0080ff;
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+a:visited {
+    color: #0080ff;
+    background-color: transparent;
+    text-decoration: none;
+}

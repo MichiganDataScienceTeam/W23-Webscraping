@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Ascii Art!</title>
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/main.css')}}">
+        <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='MDST_logo.png')}}">
+    </head>
+
+    <body>
+        <div class="header">
+            <a href="https://www.mdst.club/" target="_blank"><img src="{{url_for('static', filename='MDST_logo.png')}}" alt="mdst logo" class="logo"></a><div style="font-size:30px; margin-left:10px;">Webscraping Project</div>
+            <h1 text-align="center">Ascii Art ({{art}})!</h1>
+        </div>
+
+        <div class="ascii art" >
+            <pre>
+                {{line}}
+            </pre>
+
+        </div>
+        
+        <hr>
+        <p>find more ascii art <a href="https://www.asciiart.eu/animals">here</a></p>
+
+
+    </body>
+    
+
+
+
+
+
+</html>
