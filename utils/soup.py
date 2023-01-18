@@ -2,6 +2,9 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def getSoup(url):
+def getSoup(url: str) -> BeautifulSoup:
     page = requests.get(url)
-    return BeautifulSoup(page.content, "html.parser")
+    bs = BeautifulSoup(page.content, "html.parser")
+    page.close()
+    
+    return bs

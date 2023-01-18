@@ -1,4 +1,4 @@
-def decode(string, key):
+def decode(string:str, key:str) -> str:
     if len(string) != len(key):
         print(string)
         print(key)
@@ -10,7 +10,7 @@ def decode(string, key):
         
     return new_string
 
-def encode(string, key):
+def encode(string:str, key:str) -> str:
     if len(string) != len(key):
         print(string)
         print(key)
