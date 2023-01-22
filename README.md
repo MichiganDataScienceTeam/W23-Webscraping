@@ -28,11 +28,9 @@ The culminating project is a unified app that scrapes information about all UofM
 
 ## Goals
 
-1. Design a functional recommender system from scratch and gain insight to their
-   mechanics
-2. Provide MDST members the opportunity to work with recommender systems that are very
-   prevalent in industry
-3. Have a user interface (form of a website)
+1. Webscrape structured and unstructured data and what are good ways to display/visualize it
+2. Dive into a self-guided mini project that interests YOU (⚡ talk?)
+3. Create a "one-stop shop" that UofM students could use to search for research positions in areas they are interested in
 4. Have fun and learn something! 😃
 
 
@@ -74,7 +72,6 @@ Weeks of **2/12-3/12**: Begin individual projects
 Week of **3/19**: Wrap up individual projects
 
 -   Make visualizations of our data
--   
 
 ---
 
@@ -90,6 +87,13 @@ Week of **4/16**: Finishing Touches
 
 -   Complete the write-up
 -   Prepare for final presentations!
+
+---
+
+Week of **4/23**: Final Expo
+-  Show what we've been working on!
+
+---
 
 ## Setup
 
