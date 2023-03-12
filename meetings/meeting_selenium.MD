@@ -45,4 +45,4 @@ I made a practice file that explains most of what you need to know about Seleniu
 3. Look through the comments in ```selenium_practice.py``` since you're going to be doing this sort of stuff next. 
 
 ## Task
-Do something cool on LinkedIn (shameless plug to connect with me :). Then do something cool on other places.
+Do something cool on LinkedIn (shameless plug to connect with me :). Then do something cool on other places. I put starter code in ```selenium_starter.ipynb```
