@@ -29,7 +29,7 @@ choose one of:
 - beaver
 
 I recommend looking at the corresponding ascii art endpoint before attempting:
-```/ascii_art/\<choice\>```
+```/art/\<choice\>```
 
 I took the ascii art and performed multiple operations on it.
 
@@ -37,7 +37,7 @@ I took the ascii art and performed multiple operations on it.
 2. added attribute tags specifying the row number the text lies on ex. "row_1"
 3. shuffled the rows so it is no longer in order
 
-The goal of this task is to unscramble the image and print out the completed image (in editor is fine) of what the ascii art should actually look like. If you did it correctly, your image will look like the corresponding ```/ascii_art/\<choice\>``` endpoint.
+The goal of this task is to unscramble the image and print out the completed image (in editor is fine) of what the ascii art should actually look like. If you did it correctly, your image will look like the corresponding ```/art/\<choice\>``` endpoint.
 
 ### Notes
 When webscraping it is important to understand the representation and meaning of the data. Be looking out for edge cases I throw in that requires noticing and understanding patterns in the data. 
