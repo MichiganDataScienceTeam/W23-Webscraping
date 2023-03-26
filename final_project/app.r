@@ -4,7 +4,7 @@ library(ggplot2)
 library(dplyr)
 library(DT)
 
-df <- read_csv('data/dummy_ai.csv')
+df <- read_csv('data/dummy_ai.csv', show_col_types=FALSE)
 #print(df)
 
 
