@@ -11,7 +11,7 @@ from json import load, dump
 
 import re
 
-from crawler.website_node import WebsiteNode
+from crawler.website_node import WebsiteNode, WebsiteNodeDecoder, WebsiteNodeEncoder
 from crawler.crawler_types import NodeType
 
 
@@ -67,21 +67,13 @@ class WebsiteStorage:
     def read(self, dirpath):
         config_file = dirpath / "config.yml"
         with config_file.open("r") as ifstream:
-            for line in ifstream:
-                if line.startswith(" "):
-                    line = line.strip().removeprefix("- ")
-                    self.insert(line)
+            self.root = load(ifstream, cls=WebsiteNodeDecoder)
         self.pprint()
 
     def write(self, dirpath: pathlib.Path):
-        lines = [f"# tree structure", "source:"]
-        for node in self.__dfs():
-            offset = "  " * node.level
-            lines.append(offset + f" - {node.url}")
-
-        config_file = dirpath / "config.yml"
+        config_file = dirpath / "structure.json"
         with config_file.open("w") as ofstream:
-            ofstream.writelines(lines)
+            dump(self.root, ofstream, cls=WebsiteNodeEncoder)
 
     def __getitem__(self, url: str):
         return self.find(url)
