@@ -6,29 +6,16 @@ import requests
 import pathlib
 import os
 import bs4
+from collections import deque
+from json import load, dump
 
-from dataclasses import dataclass, field
-import enum
 import re
 
-from typing import Dict
+from crawler.website_node import WebsiteNode
+from crawler.crawler_types import NodeType
 
 
-class NodeType(enum.Enum):
-    INTERNAL = 0
-    WEBPAGE = 1
-
-
-@dataclass
-class StructureNode:
-    folder: str
-    url: str
-    type: NodeType
-    level: int
-    children: Dict[str, "StructureNode"] = field(default_factory=lambda: {})
-
-
-class SiteTreeParser:
+class WebsiteStorage:
     """
     Track structure of website when crawling.
 
@@ -37,38 +24,77 @@ class SiteTreeParser:
     """
 
     def __init__(self):
-        self.root = StructureNode("", "", NodeType.INTERNAL, -1)
-
-    @classmethod
-    def from_file(cls, filename):
-        pass
+        self.root = WebsiteNode("", "", NodeType.INTERNAL, -1)
 
     def __get_node_type(self, url: str):
         if re.match(r".html$", url):
             return NodeType.WEBPAGE
         return NodeType.INTERNAL
 
-    def __insert(self, node: StructureNode, url_parts: list[str], level: int):
+    def __insert(self, node: WebsiteNode, url_parts: list[str], level: int):
         """Helper function for recursively building a tree structure"""
         folder = url_parts[level + 1]
         children = node.children
         if len(url_parts[level:]) == 2:
             url = "/".join(url_parts[1:])
             target_type = self.__get_node_type(folder)
-            children[folder] = StructureNode(folder, url, target_type, level)
+            children[folder] = WebsiteNode(folder, url, target_type, level)
         else:
             url = "/".join(url_parts[1 : level + 2])
             if folder not in children:
-                children[folder] = StructureNode(folder, url, NodeType.INTERNAL, level)
+                children[folder] = WebsiteNode(folder, url, NodeType.INTERNAL, level)
             self.__insert(children[folder], url_parts, level + 1)
 
-    def __iter__(self):
-        """Depth-first iteration through tree structure"""
+    def __bfs(self):
+        """Breadth-first iteration through tree structure."""
+        bfs_queue = deque(self.root.children.values())
+        while len(bfs_queue) > 0:
+            node = bfs_queue.popleft()
+            yield node
+            bfs_queue.extend(node.children.values())
+
+    def __dfs(self):
+        """Depth-first iteration through tree structure."""
         stack = list(self.root.children.values())
         while len(stack) > 0:
             node = stack.pop()
             yield node
             stack.extend(node.children.values())
+
+    def __iter__(self):
+        yield from self.__dfs()
+
+    def read(self, dirpath):
+        config_file = dirpath / "config.yml"
+        with config_file.open("r") as ifstream:
+            for line in ifstream:
+                if line.startswith(" "):
+                    line = line.strip().removeprefix("- ")
+                    self.insert(line)
+        self.pprint()
+
+    def write(self, dirpath: pathlib.Path):
+        lines = [f"# tree structure", "source:"]
+        for node in self.__dfs():
+            offset = "  " * node.level
+            lines.append(offset + f" - {node.url}")
+
+        config_file = dirpath / "config.yml"
+        with config_file.open("w") as ofstream:
+            ofstream.writelines(lines)
+
+    def __getitem__(self, url: str):
+        return self.find(url)
+
+    def find(self, url: str):
+        for node in self.__bfs():
+            if node.url == url:
+                return node
+        return None
+
+    def get_subpages(self, url: str):
+        node = self.find(url)
+        return list(node.children.values())
 
     def pprint(self):
         iterator = iter(self)
@@ -108,7 +134,7 @@ def parse_links(content: str):
 def filter_links(links: list[str], prefix: str):
     filtered_links = []
     for link in links:
-        if link.startswith(prefix):
+        if re.match(r".\.html$", link):
             filtered_links.append(link)
     return filtered_links
 
@@ -122,23 +148,24 @@ def write_webpage(url: str, content: str, basedir: pathlib.Path) -> None:
         ofstream.write(content)
 
 
+def crawl(url: str, storage_directory: pathlib.Path):
+    webpath = storage_directory / pathlib.Path(get_folder_name(url))
+    webpath.mkdir(parents=True, exist_ok=True)
+    stack = [url]
+    while len(stack) > 0:
+        webpage = download_webpage(url)
+        write_webpage(url, webpage, webpath)
+        links = parse_links(webpage)
+        stack.extend(filter_links(links, url))
+        print(stack)
+        break
+
+
 @click.command("Crawler")
 @click.argument("url")
 @click.argument("storage_directory")
 def main(url: str, storage_directory: str):
-    storage_directory = pathlib.Path(storage_directory)
-    webpath = storage_directory / pathlib.Path(get_folder_name(url))
-    webpath.mkdir(parents=True, exist_ok=True)
-    num_docs = len([item for item in webpath.iterdir()])
-    # if num_docs == 0:
-    webpage = download_webpage(url)
-    write_webpage(url, webpage, webpath)
-    # else:
-    #     with (storage_directory / webpage / "index.html").open("r") as ifstream:
-    #         webpage = ifstream.read()
-    links = parse_links(webpage)
-    print(links)
-    # print(filter_links(links, url))
+    crawl(url, pathlib.Path(storage_directory))
 
 
 if __name__ == "__main__":
