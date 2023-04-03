@@ -14,7 +14,8 @@ def download_webpage(url: str) -> str:
     headers = {"User-Agent": "Mozilla/5.0"}
     response = requests.get(url, headers)
     if response.status_code >= 400:
-        raise RuntimeError("Request failed")
+        print(f"Request failed with error code {response.status_code}, skipping")
+        return None
     return response.text
 
 
@@ -47,12 +48,13 @@ def crawl(url: str, storage_directory: pathlib.Path):
     while len(stack) > 0:
         delay = rng.integers(2, 15)
         current_url = stack[-1]
+        stack.pop()
         if current_url in visited:
             continue
         print(f"Downloading {current_url}...", end="")
-        stack.pop()
 
-        webpage = download_webpage(current_url)
+        if (webpage := download_webpage(current_url)) is None:
+            continue
         storage.insert(current_url, webpage)
         visited.add(current_url)
 
