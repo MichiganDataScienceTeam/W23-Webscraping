@@ -1,16 +1,33 @@
-from dataclasses import dataclass, field
+from json import JSONDecoder, JSONEncoder
+from pathlib import Path
 from typing import Any, Dict
-from crawler.crawler_types import NodeType
-from json import JSONEncoder, JSONDecoder
+
+from crawler.utils import NodeType
 
 
-@dataclass
 class WebsiteNode:
-    folder: str
-    url: str
-    type: NodeType
-    level: int
-    children: Dict[str, "WebsiteNode"] = field(default_factory=lambda: {})
+    def __init__(self, folder: str, url: str, type: NodeType, level: int, path: Path):
+        self.folder = folder
+        self.url = url
+        self.type = type
+        self.level = level
+        self.path = path
+        self.children = {}
+        self.__create()
+
+    def __create(self):
+        if self.type == NodeType.WEBPAGE:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            self.path.touch(exist_ok=True)
+
+        elif self.type == NodeType.INTERNAL:
+            self.path.mkdir(parents=True, exist_ok=True)
+        assert self.path.exists()
+
+    def write(self, data: str):
+        if self.type == NodeType.WEBPAGE:
+            with self.path.open("w") as ofstream:
+                ofstream.write(data)
 
     def __repr__(self):
         return f"{self.url}: {self.level}"
