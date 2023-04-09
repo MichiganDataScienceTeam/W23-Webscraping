@@ -1,7 +1,8 @@
 from json import JSONDecoder, JSONEncoder
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
+from crawler.rw_lock import RWLock
 from crawler.utils import NodeType
 
 
@@ -12,6 +13,8 @@ class WebsiteNode:
         self.type = type
         self.level = level
         self.path = path
+
+        self.lock = RWLock()
         self.children = {}
         self.__create()
 
@@ -42,6 +45,7 @@ class WebsiteNodeEncoder(JSONEncoder):
                 "type": o.type,
                 "level": o.level,
                 "obj": "website_node",
+                "path": str(o.path),
             }
             if len(o.children) != 0:
                 children = [self.default(child) for child in o.children.values()]
@@ -63,7 +67,11 @@ class WebsiteNodeDecoder(JSONDecoder):
             return object
 
         node = WebsiteNode(
-            object["folder"], object["url"], object["type"], object["level"]
+            object["folder"],
+            object["url"],
+            object["type"],
+            object["level"],
+            Path(object["path"]),
         )
         if len(object["children"]) > 0:
             parsed_children = {}

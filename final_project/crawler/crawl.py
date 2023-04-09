@@ -1,6 +1,7 @@
-import os
 import pathlib
 import time
+from queue import Queue
+from threading import Lock, Thread
 
 import bs4
 import numpy as np
@@ -27,11 +28,16 @@ def parse_links(content: str, prefix_url: str):
 
     filtered = []
     for link in links:
+        if not link:
+            continue
         if link.startswith(".."):
             # ignore relative links
             continue
-        if RE_HTML.search(link) and not RE_BASE.search(link):
-            filtered.append(prefix_url + link)
+        if not RE_BASE.search(link):
+            if RE_HTML.search(link):
+                filtered.append(prefix_url + link)
+            if link.endswith("/"):
+                filtered.append(prefix_url + link)  # this is also a link to check out
     return list(set(filtered))
 
 
