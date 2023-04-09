@@ -61,6 +61,7 @@ def crawl(url: str, storage_directory: pathlib.Path):
 
         if (webpage := download_webpage(current_url)) is None:
             continue
+
         storage.insert(current_url, webpage)
         visited.add(current_url)
 
