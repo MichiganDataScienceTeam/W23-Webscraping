@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+
+# web crawler
+import pathlib
+
+import click
+
+from crawler.crawl import crawl
+
+
+@click.command("Crawler")
+@click.argument("url")
+@click.argument("storage_directory")
+def main(url: str, storage_directory: str):
+    crawl(url, pathlib.Path(storage_directory))
+
+
+if __name__ == "__main__":
+    main()
