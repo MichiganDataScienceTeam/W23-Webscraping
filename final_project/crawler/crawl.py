@@ -27,17 +27,17 @@ visited = set()
 visited_lock = Lock()
 
 
-def crawl_page(worker_id: int, url: str, storage: WebsiteStorage) -> None:
+def crawl_page(worker_id: int, url: str, storage: WebsiteStorage) -> bool:
     with visited_lock:
         if url in visited:
-            return
+            return False
 
     with visited_lock:
         visited.add(url)
 
     logger.info(f"Worker %d | Downloading %s...", worker_id, url)
     if (webpage := download_webpage(worker_id, url)) is None:
-        return
+        return False
 
     storage.insert(url, webpage)
     links = parse_links(webpage, url)
@@ -45,6 +45,7 @@ def crawl_page(worker_id: int, url: str, storage: WebsiteStorage) -> None:
         with visited_lock:
             if link not in visited:
                 job_queue.put(link)
+    return True
 
 
 def worker(worker_id: int, storage: WebsiteStorage) -> None:
@@ -54,10 +55,10 @@ def worker(worker_id: int, storage: WebsiteStorage) -> None:
     while not shutdown:
         try:
             url = job_queue.get(timeout=JOB_TIMEOUT_WAIT)
-            crawl_page(worker_id, url, storage)
-            delay = rng.uniform(5, 10)
-            time.sleep(delay)
-            logger.info("Worker %d | Sleeping for %f seconds", worker_id, delay)
+            if crawl_page(worker_id, url, storage):
+                delay = rng.uniform(10, 20)
+                logger.info("Worker %d | Sleeping for %f seconds", worker_id, delay)
+                time.sleep(delay)
         except Empty:
             logger.info("Worker %d | Wait for job timed out, shutting down", worker_id)
             shutdown = True
