@@ -12,7 +12,7 @@ def extract_courses(url):
     soup = BeautifulSoup(response.text, "html.parser")
 
     # Course code patterns
-    course_code_pattern = r'(?:^|\. )\b(?:LING|EECS|MATH|PHYSICS|ENGINEERING|SI)\s*\d{3}\b'
+    course_code_pattern = r'(?:^|\. )(\b(?:Winter|Spring|Summer|Fall)\s*\d{4}\s*(?:LING|EECS|MATH|PHYSICS|SI)\s*\d{3}(?:-\d+)?\b|\b(?:LING|EECS|MATH|PHYSICS|SI)\s*\d{3}(?:-\d+)?\b)'
     course_code_regex = re.compile(course_code_pattern, re.IGNORECASE)
 
     # Keywords that are likely to be associated with courses
@@ -60,8 +60,9 @@ if __name__ == "__main__":
         ("Nikola Banovic", "http://www.nikolabanovic.net/"),
         ("Valeria Bertacco", "https://web.eecs.umich.edu/~valeria/teaching/"),
         ("Mark Brehob", "https://web.eecs.umich.edu/~brehob/teaching.htm"),
-        ("Joyce Y. Chai", "https://web.eecs.umich.edu/~chaijy/teach.html")
-
+        ("Joyce Y. Chai", "https://web.eecs.umich.edu/~chaijy/teach.html"),
+        ("Mithun Chakraborty", "https://sites.google.com/umich.edu/mithunchakra/teaching"),
+        ("Michal Derezinski","https://web.eecs.umich.edu/~derezin/")
 
         # Add more tuples with professor names and URLs as needed
     ]

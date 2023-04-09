@@ -1,47 +1,54 @@
 {
     "Steven Abney": [
-        "Ling 492, Seminar: Digitizing Languages - this may get turned into a regular course offering",
-        "Ling 315, Introduction to Syntax",
-        "Ling 514, Semantics and Pragmatics",
-        "Ling 702 - EECS 597 - SI 760, Language and Information.",
-        "Ling 541 - EECS 595 - SI 661, Introduction to Natural Language Processing",
-        "Ling 341, Mathematics of Language.",
+        "Ling 212, Introduction to the Symbolic Analysis of Language",
         "Ling 210, Introduction to Linguistic Analysis",
-        "Ling 441, Computational Linguistics I.",
-        "Ling 212, Introduction to the Symbolic Analysis of Language"
+        "Ling 341, Mathematics of Language.",
+        "Ling 702 - EECS 597 - SI 760, Language and Information.",
+        "Ling 492, Seminar: Digitizing Languages - this may get turned into a regular course offering",
+        "Ling 514, Semantics and Pragmatics",
+        "Ling 541 - EECS 595 - SI 661, Introduction to Natural Language Processing",
+        "Ling 315, Introduction to Syntax",
+        "Ling 441, Computational Linguistics I."
     ],
     "William 'Bill' Arthur": [
         "EECS 183: Elementary Programming Concepts.",
         "EECS 370: Introduction to Computer Organization."
     ],
     "Nikola Banovic": [
-        "EECS 498 - Modeling Human Behavior (4 credits)",
         "EECS 493 - User Interface Development (4 credits)",
+        "EECS 598 - Computational Modeling in Human-Computer Interaction (3 credits)",
         "EECS 593 - Human-Computer Interaction (3 credits)",
-        "EECS 598 - Computational Modeling in Human-Computer Interaction (3 credits)"
+        "EECS 498 - Modeling Human Behavior (4 credits)"
     ],
     "Valeria Bertacco": [
         "EECS 496 - Major Design Experience Professionalism",
         "EECS 578 - Correct Operation for Processors and Embedded Systems",
-        "EECS 370 - Introduction to Computer Organization",
+        "EECS 270 - Introduction to Logic Design",
         "EECS 478 - Logic Circuit Synthesis and Optimization",
-        "EECS 270 - Introduction to Logic Design"
+        "EECS 370 - Introduction to Computer Organization"
     ],
     "Mark Brehob": [
-        "EECS 452",
-        "EECS 281/380",
-        "EECS 470",
         "EECS 270",
-        "EECS 473",
+        "EECS 470",
+        "EECS 373",
         "EECS 203",
-        "Engineering 100",
+        "EECS 473",
         "EECS 370",
-        "Engineering 101",
-        "EECS 373"
+        "EECS 281/380",
+        "EECS 452"
     ],
     "Joyce Y. Chai": [
+        "EECS 492: Introduction to Artificial Intelligence",
         "EECS 692: Advanced Artificial Intelligence",
-        "EECS 595: Natural Language Processing",
-        "EECS 492: Introduction to Artificial Intelligence"
+        "EECS 595: Natural Language Processing"
+    ],
+    "Mithun Chakraborty": [
+        "EECS 592:"
+    ],
+    "Michal Derezinski": [
+        "Fall 2022 EECS 598-003",
+        "Winter 2023 EECS 498-005",
+        "Fall 2021 EECS 281",
+        "Winter 2022 EECS 545"
     ]
 }
