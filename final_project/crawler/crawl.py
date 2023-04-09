@@ -19,17 +19,6 @@ NUM_WORKERS = 10
 JOB_TIMEOUT_WAIT = 10
 
 
-class RequestType(int, Enum):
-    SHUTDOWN = 0
-    SCRAPE = 1
-
-
-@dataclass
-class WorkRequest:
-    url: Union[str, None]
-    type: RequestType
-
-
 logger = logging.getLogger(__name__)
 logging.basicConfig(level="INFO", format="%(levelname)s: %(message)s")
 
@@ -55,7 +44,7 @@ def crawl_page(worker_id: int, url: str, storage: WebsiteStorage) -> None:
     for link in links:
         with visited_lock:
             if link not in visited:
-                job_queue.put(WorkRequest(link, RequestType.SCRAPE))
+                job_queue.put(link)
 
 
 def worker(worker_id: int, storage: WebsiteStorage) -> None:
@@ -64,8 +53,8 @@ def worker(worker_id: int, storage: WebsiteStorage) -> None:
     rng = np.random.default_rng()
     while not shutdown:
         try:
-            job = job_queue.get(timeout=JOB_TIMEOUT_WAIT)
-            crawl_page(worker_id, job.url, storage)
+            url = job_queue.get(timeout=JOB_TIMEOUT_WAIT)
+            crawl_page(worker_id, url, storage)
             delay = rng.uniform(5, 10)
             time.sleep(delay)
             logger.info("Worker %d | Sleeping for %f seconds", worker_id, delay)
@@ -126,7 +115,7 @@ def crawl(url: str, storage_directory: pathlib.Path):
     webpath.mkdir(parents=True, exist_ok=True)
 
     storage = WebsiteStorage(storage_directory)
-    job_queue.put(WorkRequest(url, RequestType.SCRAPE))
+    job_queue.put(url)
     with ThreadPoolExecutor(NUM_WORKERS) as executor:
         for index in range(NUM_WORKERS):
             executor.submit(worker, index, storage)
