@@ -77,6 +77,7 @@ server <- function(input, output) {
       showModal(modalDialog(
         renderText(paste0("Name: ", row_data$name)),
         renderText(paste0("Email: ", row_data$email)),
+        renderText(paste0("Lab: ", row_data$lab)),
         renderText(paste0("Office: ", row_data$office)),
         renderText(paste0("Clarity: ", row_data$clarity)),
         renderText(paste0("Preparedness: ", row_data$preparedness)),
