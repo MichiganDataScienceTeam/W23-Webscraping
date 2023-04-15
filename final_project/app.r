@@ -1,10 +1,11 @@
 library(shiny)
-library(tidyverse)
+library(readr)
 library(ggplot2)
 library(dplyr)
 library(DT)
+library(shinyjs)
 
-df <- read_csv('data/dummy_ai.csv', show_col_types=FALSE)
+df <- read_csv('data/dummy_cse.csv', show_col_types=FALSE)
 #print(df)
 
 
@@ -65,9 +66,29 @@ server <- function(input, output) {
   
   # Display filtered data in table format
   output$profs <- renderDataTable({
-    filtered_data()
-  }, options= list(pageLength=5))
+    filtered_data() %>% 
+      select(name, email, clarity, preparedness, respect, research, interests)
+  }, options = list(pageLength = 5), server = TRUE)
+
+  # Display selected row data in popup when a row is clicked
+  observeEvent(input$profs_rows_selected, {
+    if(length(input$profs_rows_selected) == 1){
+      row_data <- filtered_data() %>% slice(input$profs_rows_selected)
+      showModal(modalDialog(
+        renderText(paste0("Name: ", row_data$name)),
+        renderText(paste0("Email: ", row_data$email)),
+        renderText(paste0("Office: ", row_data$office)),
+        renderText(paste0("Clarity: ", row_data$clarity)),
+        renderText(paste0("Preparedness: ", row_data$preparedness)),
+        renderText(paste0("Respect: ", row_data$respect)),
+        renderText(paste0("Research: ", row_data$research)),
+        renderText(paste0("Interests: ", row_data$interests)),
+        easyClose = TRUE, footer = NULL
+      ))
+    }
+  })
 }
+
 
 # Run the application 
 shinyApp(ui = ui, server = server)
