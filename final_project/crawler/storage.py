@@ -7,7 +7,7 @@ from os import getcwd
 from threading import Lock
 from typing import List, Union
 
-from crawler.utils import RE_BASE, RE_HTML, NodeType, normalize_url
+from crawler.utils import RE_BASE, RE_HTML, RE_TRAILING_SLASH, NodeType, normalize_url
 from crawler.website_node import WebsiteNode, WebsiteNodeDecoder, WebsiteNodeEncoder
 
 
@@ -150,5 +150,8 @@ class WebsiteStorage:
 
     def insert(self, url: str, data: str):
         """Insert a webpage url into the tree structure."""
+        url = RE_TRAILING_SLASH.sub("", url)
+        if not RE_HTML.search(url):
+            url += "/index.html"
         url = RE_BASE.sub("", url)
         self.__insert(self.root, [""] + url.split("/"), 0, data)
