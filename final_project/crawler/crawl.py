@@ -98,6 +98,13 @@ def parse_links(content: str, prefix_url: str):
     return list(set(filtered))
 
 
+def load(filepath: Union[str, pathlib.Path]) -> WebsiteStorage:
+    filepath = pathlib.Path(filepath)
+    storage =  WebsiteStorage(filepath)
+    storage.read()
+    return storage
+
+
 def crawl(url: str, storage_directory: pathlib.Path):
     structure_path = storage_directory / pathlib.Path("structure.json")
     if structure_path.exists():

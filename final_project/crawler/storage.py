@@ -98,7 +98,7 @@ class WebsiteStorage:
 
     def read(self) -> None:
         """Load storage from cached results on disk."""
-        config_file = self.workdir / "config.yml"
+        config_file = self.workdir / "structure.json"
         with config_file.open("r") as ifstream:
             self.root = load(ifstream, cls=WebsiteNodeDecoder)
         self.pprint()
