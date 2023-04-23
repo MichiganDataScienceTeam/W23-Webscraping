@@ -6,6 +6,12 @@ library(DT)
 library(shinyjs)
 
 df <- read_csv('data/cse_final.csv', show_col_types=FALSE)
+# Convert "lab" and "interests" columns to vectors
+df$lab <- gsub("\\[|\\]|\\'", "", df$lab)  # remove square brackets
+df$lab <- strsplit(df$lab, ",\\s*")    # split by comma and whitespace
+
+df$interests <- gsub("\\[|\\]|\\'", "", df$interests)
+df$interests <- strsplit(df$interests, ",\\s*")
 #print(df)
 
 
@@ -42,8 +48,16 @@ ui <- fluidPage(
         ),
       
       checkboxInput("research_check", "Has an Open Research Position?"),
+
+      renderText("Labs Professor Works in"),
+      checkboxInput("ai_check", "AI", value=TRUE),
+      checkboxInput("theory_check", "Theory", value=TRUE),
+      checkboxInput("ce_check", "CE", value=TRUE),
+      checkboxInput("systems_check", "Systems", value=TRUE),
+      checkboxInput("cse_teaching_check", "CSE-Teaching", value=TRUE),
+      checkboxInput("hcc_check", "HCC", value=TRUE),
+
       checkboxInput("taught_check", "Has The Professor Taught/Been Evaluated?")
-      
     ),
     
     
@@ -51,6 +65,25 @@ ui <- fluidPage(
     
   )
 )
+
+filter_lab <- function(df, input) {
+  include <- list(
+    c('ai', input$ai_check),
+    c('theory', input$theory_check),
+    c('ce', input$ce_check),
+    c('systems', input$systems_check),
+    c('cse-teaching', input$cse_teaching_check),
+    c('hcc', input$hcc_check)
+  ) 
+  
+  filtered_include <- Filter(function(x) x[2], include)
+  filtered_include <- unlist(lapply(filtered_include, function(x) x[1]))
+
+  df[sapply(df$lab, function(x) any(x %in% filtered_include)), ]
+}
+
+
+
 
 server <- function(input, output) {
   # Filter data based on range sliders
@@ -63,10 +96,13 @@ server <- function(input, output) {
         input$preparedness_range[1] <= preparedness & preparedness <= input$preparedness_range[2] &
         input$respect_range[1] <= respect & respect <= input$respect_range[2] &
         (!input$research_check | research)
-      )
+      ) %>%
+      filter_lab(input)
     }
     else {
-      df
+      df %>% filter(
+        (!input$research_check | research)
+      ) %>% filter_lab(input)
     }
          
   })
@@ -74,8 +110,15 @@ server <- function(input, output) {
   # Display filtered data in table format
   output$profs <- renderDataTable({
     filtered_data() %>% 
-      select(name, email, clarity, preparedness, respect, research, lab, interests)
-  }, options = list(pageLength = 5), server = TRUE)
+      select(name, email, clarity, preparedness, respect, research, lab, interests) %>%
+      datatable(
+        options = list(
+          pageLength = 5,
+          columnDefs = list(list(targets = c(6,7,8), orderable = FALSE))
+        )
+      )
+  }, server = TRUE)
+
 
   # Display selected row data in popup when a row is clicked
   observeEvent(input$profs_rows_selected, {
@@ -86,6 +129,8 @@ server <- function(input, output) {
         renderText(paste0("Email: ", row_data$email)),
         renderText(paste0("Lab: ", row_data$lab)),
         renderText(paste0("Office: ", row_data$office)),
+        if(!is.na(row_data$website)) renderText(paste0("Website: ", row_data$website)),
+        if(!is.na(row_data$phone)) renderText(paste0("Phone: ", row_data$phone)),
         renderText(paste0("Students Taught: ", row_data$`students taught`)),
         renderText(paste0("Terms Taught: ", row_data$`terms taught`)),
         easyClose = TRUE, footer = NULL
